@@ -76,7 +76,7 @@ public class Listeners implements ActionListener, MouseListener, KeyListener {
         am.put("right-released", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                main.player.rightPressed = false;
+                main.player.rightPressed = false;// delete this comment <3
             }
         });
     }

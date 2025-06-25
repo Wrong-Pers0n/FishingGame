@@ -48,7 +48,7 @@ public class BoidFish extends ParentFish{
     }
 
 
-
+// delete this comment <3
     public void drawFish(Graphics2D g) {
         g.setColor(Color.cyan);
         int scaledX = (int) Math.round((x + main.screenWidth/2.0-main.globalCameraOffsetX)*upscaleBy);

@@ -81,7 +81,7 @@ public class Framework extends JFrame {
             panel.setSize(frameSize.width, frameSize.height);
             panel.setLocation(0, 0);
 
-
+// delete this comment <3
 
             // Optionally revalidate and repaint
             panel.revalidate();

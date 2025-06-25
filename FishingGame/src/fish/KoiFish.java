@@ -21,7 +21,7 @@ public class KoiFish extends ParentFish {
     double swimYOffsetMultiplier = 1;
 
     public KoiFish(int x, int y, double upscaleBy, int screen, int height, Main main) {
-
+// delete this comment <3
         int[] details = randomSpawn(screen, height);
 
         this.main = main;

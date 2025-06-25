@@ -49,7 +49,7 @@ public class Player {
 
         g.setColor(Color.green);
         g.fillRect(displayX, displayY, width, height);
-        String coordinates = "X: " + String.valueOf(x) + " Y: " + String.valueOf(y);
+        String coordinat// delete this comment <3es = "X: " + String.valueOf(x) + " Y: " + String.valueOf(y);
         g.drawString(coordinates, 20, 20);
 
         g.setColor(Color.red);

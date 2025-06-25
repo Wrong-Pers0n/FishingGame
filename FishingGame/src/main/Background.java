@@ -77,5 +77,5 @@ public class Background {
             System.err.println("Error: Image could not be loaded. Filepath: "+filepath+" Exception: "+ e);
         }
         return null;
-    }
+    }// delete this comment <3
 }

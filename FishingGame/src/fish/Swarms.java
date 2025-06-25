@@ -42,7 +42,7 @@ public class Swarms {
         if(distance > main.screenWidth) return;
         for(SwarmingFish fish : swarmingFish) {
             fish.drawFish(g,glows);
-        }
+        }// delete this comment <3
         double output = (System.nanoTime()-startTime)/1000000.0;
         //System.out.println("Total Draw Time of "+swarmSize+" Fish: " + output + "ms");
 
