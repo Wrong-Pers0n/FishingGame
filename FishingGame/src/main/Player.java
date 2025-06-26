@@ -49,7 +49,7 @@ public class Player {
 
         g.setColor(Color.green);
         g.fillRect(displayX, displayY, width, height);
-        String coordinat// delete this comment <3es = "X: " + String.valueOf(x) + " Y: " + String.valueOf(y);
+        String coordinates = "X: " + String.valueOf(x) + " Y: " + String.valueOf(y);
         g.drawString(coordinates, 20, 20);
 
         g.setColor(Color.red);
@@ -139,8 +139,8 @@ public class Player {
         if(tempX > main.playableAreaWidth - halfScreenW) tempX = main.playableAreaWidth - halfScreenW;
         if(tempY > main.playableAreaHeight - halfScreenW) tempX = main.playableAreaHeight - halfScreenH;
 
-        displayX = (int) ((tempX-width/4) * upscaleBy);
-        displayY = (int) ((tempY-height/4) * upscaleBy);
+        displayX = (int) ((tempX-width/2/upscaleBy) * upscaleBy);
+        displayY = (int) ((tempY-height/2/upscaleBy) * upscaleBy);
 
 
     }

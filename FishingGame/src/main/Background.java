@@ -13,6 +13,7 @@ public class Background {
     private BufferedImage backgroundImage;
     private int displayX, displayY;
     double upscaleBy;
+    float lightDensity = 0f;
 
     int resizeWidth, resizeHeight;
 
@@ -22,8 +23,8 @@ public class Background {
         this.main = main;
         loadBackground();
         this.upscaleBy = upscaleBy;
-        this.resizeHeight = resizeHeight*2;
-        this.resizeWidth = resizeWidth*2;
+        this.resizeHeight = (int) (resizeHeight*upscaleBy);
+        this.resizeWidth = (int) (resizeWidth*upscaleBy);
 
         bufferedImageResult = new BufferedImage(
                 this.resizeWidth,
@@ -53,7 +54,7 @@ public class Background {
 
     }
 
-    public void drawOverlay(Graphics2D g, float lightDensity, double upscaleBy) {
+    public void drawOverlay(Graphics2D g, double upscaleBy) {
         if(lightDensity != 0f) {
             long startTime = System.nanoTime();
             g.setColor(Color.black);
@@ -66,16 +67,17 @@ public class Background {
         }
     }
 
-    private void loadBackground() {
-        backgroundImage = getImage("/background/fishingBackground.png");
-    }
-    private BufferedImage getImage(String filepath) {
-        try {
-            InputStream in = getClass().getResourceAsStream(filepath);
-            return ImageIO.read(in);
-        } catch (IOException e) {
-            System.err.println("Error: Image could not be loaded. Filepath: "+filepath+" Exception: "+ e);
+    public void calculateOverlayDensity(double y) {
+        if(y < 800) {
+            lightDensity = 0f;
+            return;
         }
-        return null;
-    }// delete this comment <3
+        lightDensity = (float) ((y-800) / 400.0);
+        if(lightDensity > 0.95f) lightDensity = 0.95f;
+    }
+
+    private void loadBackground() {
+        backgroundImage = main.tool.loadImage("/background/fishingBackground.png");
+    }
+
 }
