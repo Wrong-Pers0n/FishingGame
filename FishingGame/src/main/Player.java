@@ -49,8 +49,6 @@ public class Player {
 
         g.setColor(Color.green);
         g.fillRect(displayX, displayY, width, height);
-        String coordinates = "X: " + String.valueOf(x) + " Y: " + String.valueOf(y);
-        g.drawString(coordinates, 20, 20);
 
         g.setColor(Color.red);
         g.fillRect(main.screenWidth, main.screenHeight, 10,10);

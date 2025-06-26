@@ -24,20 +24,14 @@ public class Framework extends JFrame {
         graphicsDevice = ge.getDefaultScreenDevice();
 
         if (graphicsDevice.isFullScreenSupported()) {
-            // Set the JFrame to fullscreen mode
             setUndecorated(true);
             graphicsDevice.setFullScreenWindow(this);
         } else {
-            // Fallback to maximized mode
             setExtendedState(JFrame.MAXIMIZED_BOTH);
             setUndecorated(true);
             setVisible(true);
         }
 
-
-
-
-        // Add the panel and set its size
         this.add(panel);
         resizePanel();
 
@@ -46,7 +40,6 @@ public class Framework extends JFrame {
         // Add key listener
         //addKeyListener(new KeyChecker(panel));
 
-        // Add component listener to handle resizing
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -62,7 +55,7 @@ public class Framework extends JFrame {
 
         setSize(width,height);
 
-        setBackground(Color.BLUE);
+        setBackground(Color.green);
 
         setLocation((int) Math.round((screenSize.getWidth()/2 - getSize().getWidth()/2)), (int) Math.round((screenSize.getHeight()/2 - getSize().getHeight()/2)));
 
@@ -80,8 +73,6 @@ public class Framework extends JFrame {
             Dimension frameSize = this.getSize();
             panel.setSize(frameSize.width, frameSize.height);
             panel.setLocation(0, 0);
-
-// delete this comment <3
 
             // Optionally revalidate and repaint
             panel.revalidate();

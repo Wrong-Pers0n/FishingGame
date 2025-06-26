@@ -60,20 +60,23 @@ public class Background {
             g.setColor(Color.black);
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, lightDensity));
-            g.fillRect(0, 0, (int) Math.ceil(main.screenWidth*upscaleBy), (int) Math.ceil(main.screenHeight*upscaleBy));
-            System.out.println("Total Background Draw Time: " + (System.nanoTime()-startTime)/1000000.0 + "ms");
+            g.fillRect(0, 0, (int) Math.ceil(main.screenWidth * upscaleBy), (int) Math.ceil(main.screenHeight * upscaleBy));
+            System.out.println("Total Background Draw Time: " + (System.nanoTime() - startTime) / 1000000.0 + "ms");
 
-            System.out.println("Width: "+(int) Math.ceil(main.screenWidth*upscaleBy)+" Height: "+(int) Math.ceil(main.screenHeight*upscaleBy));
+            System.out.println("Width: " + (int) Math.ceil(main.screenWidth * upscaleBy) + " Height: " + (int) Math.ceil(main.screenHeight * upscaleBy));
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
     }
 
     public void calculateOverlayDensity(double y) {
-        if(y < 800) {
+        if(y < 500) {
             lightDensity = 0f;
             return;
+        } else if(y >= 1260) {
+            lightDensity = 0.95f;
+            return;
         }
-        lightDensity = (float) ((y-800) / 400.0);
-        if(lightDensity > 0.95f) lightDensity = 0.95f;
+        lightDensity = (float) ((y-500) / 800.0);
     }
 
     private void loadBackground() {

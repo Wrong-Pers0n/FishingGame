@@ -28,7 +28,8 @@ public class Main extends JPanel  {
     UtilityTool tool = new UtilityTool();
     public Player player = new Player(this, upscaleBy, playableAreaWidth, playableAreaHeight);
     Listeners listener = new Listeners(this);
-    Background background = new Background(this,upscaleBy,screenWidth,screenHeight);
+    Background background = new Background(this,upscaleBy,playableAreaWidth,playableAreaHeight);
+    UI ui = new UI();
 
 
     ArrayList<KoiFish> koiFish = new ArrayList<>();
@@ -118,6 +119,8 @@ public class Main extends JPanel  {
         for(Swarms swarm : swarms) {
             swarm.draw(g);
         }
+
+        ui.drawCoordinates(g,player);
     }
 
     private void set() {
