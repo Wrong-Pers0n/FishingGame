@@ -1,6 +1,12 @@
 package main;
 
+import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
+
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 @SuppressWarnings("ALL")
 public class Player {
@@ -31,6 +37,9 @@ public class Player {
     int playableX;
     int playableY;
 
+    BufferedImage player;
+    Texture playerTexture;
+
     public Player(Main main, double upscaleBy, int playableAreaX, int playableAreaY) {
         this.main = main;
         this.upscaleBy = upscaleBy;
@@ -43,18 +52,36 @@ public class Player {
         this.playableY = playableAreaY;
         y = 20;
         moveCamera();
+
+        player = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = player.createGraphics();
+        // Disable antialiasing if not needed
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        g.setColor(Color.CYAN);
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        g.fillRect(0, 0, width, height);
+        g.dispose();
+
+
     }
 
-    public void drawPlayer(Graphics2D g) {
+    public void drawPlayer() {
 
-        g.setColor(Color.green);
-        g.fillRect(displayX, displayY, width, height);
+        if(player != null) {
 
-        g.setColor(Color.red);
-        g.fillRect(main.screenWidth, main.screenHeight, 10,10);
+        }
+        System.out.println("X: "+x+" Y: "+y);
+        main.drawImage(playerTexture,displayX,displayY,width,height,1f);
+
+        //g.setColor(Color.green);
+        //g.fillRect(displayX, displayY, width, height);
+//
+        //g.setColor(Color.red);
+        //g.fillRect(main.screenWidth, main.screenHeight, 10,10);
     }
 
     public void movePlayer() {
+        //System.out.println("Moved: X: "+x + " Y:"+y);
 
         if(upPressed) {
             if(movingY > -maxSpeed) {
@@ -140,6 +167,13 @@ public class Player {
         displayX = (int) ((tempX-width/2/upscaleBy) * upscaleBy);
         displayY = (int) ((tempY-height/2/upscaleBy) * upscaleBy);
 
+
+    }
+
+    public void initPlayer(GLAutoDrawable gl) {
+        GLProfile profile = gl.getGLProfile();
+        playerTexture = AWTTextureIO.newTexture(profile, player, true);
+        System.out.println("Player initialized: "+(playerTexture != null));
 
     }
 }

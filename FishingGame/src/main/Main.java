@@ -1,15 +1,23 @@
 package main;
 
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
 import fish.KoiFish;
 import fish.Swarms;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Main extends JPanel  {
+public class Main extends JPanel {
+
+    //JOGLRenderer renderer = new JOGLRenderer(this);
 
     public int screenWidth = 683;
     public int screenHeight = 384;
@@ -25,18 +33,23 @@ public class Main extends JPanel  {
     Timer gameTimer;
     Timer algorithmTimer;
 
+    static Framework framework;
+
     UtilityTool tool = new UtilityTool();
     public Player player = new Player(this, upscaleBy, playableAreaWidth, playableAreaHeight);
     Listeners listener = new Listeners(this);
     Background background = new Background(this,upscaleBy,playableAreaWidth,playableAreaHeight);
     UI ui = new UI();
 
+    GL2 gl;
+
+
 
     ArrayList<KoiFish> koiFish = new ArrayList<>();
     ArrayList<Swarms> swarms = new ArrayList<>();
 
     public static void main(String[] args) {
-        new Framework();
+        framework = new Framework();
     }
 
     public Main() {
@@ -55,6 +68,14 @@ public class Main extends JPanel  {
 
         //System.setProperty("sun.java2d.opengl", "true");
         addMouseListener(listener);
+
+
+    }
+
+    public void setup(GL2 gl) {
+
+        this.gl = gl;
+
         try {
             System.out.println("Spawning all the fish...");
             for(int i = 0; i < 50; i++) {
@@ -83,13 +104,15 @@ public class Main extends JPanel  {
         gameTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                //long startTime = System.nanoTime();
+                long startTime = System.nanoTime();
 
                 set();
-                repaint();
 
-                //double output = (System.nanoTime()-startTime)/1000000.0;
-                //System.out.println("Total Set Time: " + output + "ms");
+                Framework.window.display();
+                //repaint();
+
+                double output = (System.nanoTime()-startTime)/1000000.0;
+                System.out.println("Total Set Time: " + output + "ms");
             }
         }, 0, 17);
         algorithmTimer.schedule(new TimerTask() {
@@ -98,7 +121,6 @@ public class Main extends JPanel  {
                 algorithmSet();
             }
         }, 0, 51);
-
     }
 
     @Override
@@ -106,21 +128,21 @@ public class Main extends JPanel  {
         super.paint(gtd);
         Graphics2D g = (Graphics2D) gtd;
 
-        background.drawBackground(g);
+        background.drawBackground();
 
-        player.drawPlayer(g);
+        player.drawPlayer();
 
         for(KoiFish fish : koiFish) {
-            fish.drawFish(g);
+            fish.drawFish();
         }
 
-        background.drawOverlay(g, upscaleBy);
+        //background.drawOverlay(upscaleBy);
 
         for(Swarms swarm : swarms) {
-            swarm.draw(g);
+            swarm.draw();
         }
 
-        ui.drawCoordinates(g,player);
+        //ui.drawCoordinates(player);
     }
 
     private void set() {
@@ -146,5 +168,30 @@ public class Main extends JPanel  {
         for(KoiFish fish : koiFish) {
             fish.checkClick(x,y);
         }
+    }
+
+    public void drawImage(Texture tex, int x, int y, int width, int height, float opacity) {
+        // Convert image to texture
+        tex.enable(gl);
+        tex.bind(gl);
+
+        // Enable blending for opacity
+        gl.glEnable(GL2.GL_BLEND);
+        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+        gl.glColor4f(1f, 1f, 1f, opacity); // Set opacity
+
+        // Draw textured quad
+        gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0f, 1f); gl.glVertex2f(x, y);
+        gl.glTexCoord2f(1f, 1f); gl.glVertex2f(x + width, y);
+        gl.glTexCoord2f(1f, 0f); gl.glVertex2f(x + width, y + height);
+        gl.glTexCoord2f(0f, 0f); gl.glVertex2f(x, y + height);
+        gl.glEnd();
+
+        tex.disable(gl);
+    }
+
+    public void createTextures(GLAutoDrawable gl) {
+
     }
 }

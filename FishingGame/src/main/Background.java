@@ -1,5 +1,10 @@
 package main;
 
+import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -18,6 +23,7 @@ public class Background {
     int resizeWidth, resizeHeight;
 
     BufferedImage bufferedImageResult;
+    static Texture background;
 
     public Background(Main main, double upscaleBy, int resizeWidth, int resizeHeight) {
         this.main = main;
@@ -34,20 +40,22 @@ public class Background {
 
     }
 
-
-    public void drawBackground(Graphics2D g) {
+    //Graphics2D g
+    public void drawBackground() {
         displayX = (int) Math.round((main.screenWidth/2.0-main.globalCameraOffsetX)*upscaleBy);
         displayY = (int) Math.round((main.screenHeight/2.0-main.globalCameraOffsetY)*upscaleBy);
 
         //Graphics2D g2d = bufferedImageResult.createGraphics();
-        g.drawImage(
-                backgroundImage,
-                displayX,
-                displayY,
-                resizeWidth,
-                resizeHeight,
-                null
-        );
+        //g.drawImage(
+        //        backgroundImage,
+        //        displayX,
+        //        displayY,
+        //        resizeWidth,
+        //        resizeHeight,
+        //        null
+        //);
+
+        main.drawImage(background,displayX,displayY,resizeWidth,resizeHeight,1f);
 
 
         //g.drawImage(backgroundImage, displayX, displayY, null);
@@ -56,15 +64,17 @@ public class Background {
 
     public void drawOverlay(Graphics2D g, double upscaleBy) {
         if(lightDensity != 0f) {
-            long startTime = System.nanoTime();
-            g.setColor(Color.black);
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, lightDensity));
-            g.fillRect(0, 0, (int) Math.ceil(main.screenWidth * upscaleBy), (int) Math.ceil(main.screenHeight * upscaleBy));
-            System.out.println("Total Background Draw Time: " + (System.nanoTime() - startTime) / 1000000.0 + "ms");
+            //long startTime = System.nanoTime();
+            //g.setColor(Color.black);
+            //g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+            //g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, lightDensity));
+            //g.fillRect(0, 0, (int) Math.ceil(main.screenWidth * upscaleBy), (int) Math.ceil(main.screenHeight * upscaleBy));
+            //System.out.println("Total Background Draw Time: " + (System.nanoTime() - startTime) / 1000000.0 + "ms");
+//
+            //System.out.println("Width: " + (int) Math.ceil(main.screenWidth * upscaleBy) + " Height: " + (int) Math.ceil(main.screenHeight * upscaleBy));
+            //g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
-            System.out.println("Width: " + (int) Math.ceil(main.screenWidth * upscaleBy) + " Height: " + (int) Math.ceil(main.screenHeight * upscaleBy));
-            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+            //main.drawImage(backgroundImag)
         }
     }
 
@@ -83,4 +93,9 @@ public class Background {
         backgroundImage = main.tool.loadImage("/background/fishingBackground.png");
     }
 
+    public void initBackground(GLAutoDrawable gl) {
+        GLProfile profile = gl.getGLProfile();
+        background = AWTTextureIO.newTexture(profile, bufferedImageResult, true);
+        System.out.println("Background initialized: "+(background != null));
+    }
 }

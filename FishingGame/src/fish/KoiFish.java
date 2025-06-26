@@ -40,13 +40,17 @@ public class KoiFish extends ParentFish {
     }
 
 
-    public void drawFish(Graphics2D g) {
+    public void drawFish() {
 
-        if(!clickedOn) { g.setColor(Color.red); }
-        else { g.setColor(Color.black); }
+        //if(!clickedOn) { g.setColor(Color.red); }
+        //else { g.setColor(Color.black); }
+
         int scaledX = (int) Math.round((x + main.screenWidth/2.0-main.globalCameraOffsetX)*upscaleBy);
         int scaledY = (int) Math.round((swimYOffset+y + main.screenHeight/2.0-main.globalCameraOffsetY)*upscaleBy);
-        g.fillOval(scaledX,scaledY, 30, 30);
+
+
+
+        //g.fillOval(scaledX,scaledY, 30, 30);
     }
 
 

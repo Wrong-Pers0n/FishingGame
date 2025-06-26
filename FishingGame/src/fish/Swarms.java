@@ -1,5 +1,6 @@
 package fish;
 
+import com.jogamp.opengl.GLAutoDrawable;
 import main.Main;
 
 import java.awt.*;
@@ -37,11 +38,11 @@ public class Swarms {
         System.out.println("Successfully spawned "+amount+" fish");
     }
 
-    public void draw(Graphics2D g) {
+    public void draw() {
         long startTime = System.nanoTime();
         if(distance > main.screenWidth) return;
         for(SwarmingFish fish : swarmingFish) {
-            fish.drawFish(g,glows);
+            fish.drawFish(glows);
         }// delete this comment <3
         double output = (System.nanoTime()-startTime)/1000000.0;
         //System.out.println("Total Draw Time of "+swarmSize+" Fish: " + output + "ms");
@@ -96,5 +97,12 @@ public class Swarms {
 
         steerX = Math.cos(movementAngle) * swarmMoveWeight;
         steerY = Math.sin(movementAngle) * swarmMoveWeight;
+    }
+
+    public void initFish(GLAutoDrawable gl) {
+        for(SwarmingFish fish : swarmingFish) {
+            fish.initFish(gl);
+        }
+        System.out.println("Swarm initialized");
     }
 }

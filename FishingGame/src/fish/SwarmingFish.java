@@ -1,6 +1,10 @@
 package fish;
 
 
+import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
 import main.Main;
 
 import java.awt.*;
@@ -38,6 +42,7 @@ public class SwarmingFish extends ParentFish {
     int upscaledX;
     int upscaledY;
     BufferedImage fish;
+    Texture fishTexture;
 
     public SwarmingFish(Main main, double upscaleBy, double swarmX, double swarmY) {
         this.main = main;
@@ -70,17 +75,20 @@ public class SwarmingFish extends ParentFish {
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
         g.fillRect(0, 0, upscaledWidth, upscaledHeight);
         g.dispose();
+
     }
 
 
 
-    public void drawFish(Graphics2D g, boolean glows) {
+    public void drawFish(boolean glows) {
         if(distance > main.screenWidth) return;
 
         upscaledX = (int) ((x + main.screenWidth/2-main.globalCameraOffsetX)*upscaleBy);
         upscaledY = (int) ((y + main.screenHeight/2-main.globalCameraOffsetY)*upscaleBy);
 
-        g.drawImage(fish,upscaledX,upscaledY, null);
+        main.drawImage(fishTexture,upscaledX,upscaledY,upscaledWidth, upscaledHeight, 1f);
+
+        //g.drawImage(fish,upscaledX,upscaledY, null);
     }
 
     @Override
@@ -155,5 +163,10 @@ public class SwarmingFish extends ParentFish {
         } else {
             codeAvoidPlayerWeight = 0;
         }
+    }
+
+    public void initFish(GLAutoDrawable gl) {
+        GLProfile profile = gl.getGLProfile();
+        fishTexture = AWTTextureIO.newTexture(profile, fish, true);
     }
 }
